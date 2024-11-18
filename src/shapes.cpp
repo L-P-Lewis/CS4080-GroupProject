@@ -23,6 +23,13 @@ Vector2 Vector2::operator-(Vector2 Other){
 	return Out;
 }
 
+Vector2 Vector2::operator*(double Scalar){
+	Vector2 Out;
+	Out.X = X * Scalar;
+	Out.Y = Y * Scalar;
+	return Out;
+}
+
 std::tuple<double, double> Polygon::ProjectShape(Vector2 Axis){
 	double min, max;
 	for (int i = 0; i < Points.size(); i++) {

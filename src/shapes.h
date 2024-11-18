@@ -23,6 +23,7 @@ namespace KinSolver {
 	public:
 		double X;
 		double Y;
+		Vector2 operator*(double scalar);
 		Vector2 operator+(Vector2 Other);
 		Vector2 operator-(Vector2 Other);
 	};
