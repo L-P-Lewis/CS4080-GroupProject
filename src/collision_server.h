@@ -21,6 +21,7 @@ namespace KinSolver {
 		
 	};
 
+	double TestCollideShapes(Shape Mover, Shape Target, Vector2 Movement);
 
 	// The main collision server, holds a record of all physical shapes in the world and has methods for moving them
 	class CollisionServer {

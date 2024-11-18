@@ -1,6 +1,7 @@
 #include <vector>
 #include <algorithm>
 #include <tuple>
+#include <cmath>
 #include "shapes.h"
 
 using namespace KinSolver;
@@ -29,7 +30,16 @@ Vector2 Vector2::operator*(double Scalar){
 	Out.Y = Y * Scalar;
 	return Out;
 }
-
+bool Vector2::operator==(Vector2 Other){
+	return X == Other.X && Y == Other.Y;
+}
+Vector2 Vector2::Normalized() {
+	double Length = sqrt(X * X + Y * Y);
+	Vector2 Other;
+	Other.X = X / Length;
+	Other.Y = Y / Length;
+	return Other;
+}
 std::tuple<double, double> Polygon::ProjectShape(Vector2 Axis){
 	double min, max;
 	for (int i = 0; i < Points.size(); i++) {
@@ -47,7 +57,7 @@ std::vector<Vector2> Polygon::GetSeperationAxes(){
 		Vector2 Axis;
 		Axis.X = -Dir.Y;
 		Axis.Y = Dir.X;
-		Out.push_back(Axis);
+		Out.push_back(Axis.Normalized());
 	}
 	return Out;
 }

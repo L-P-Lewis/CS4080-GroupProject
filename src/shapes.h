@@ -26,6 +26,8 @@ namespace KinSolver {
 		Vector2 operator*(double scalar);
 		Vector2 operator+(Vector2 Other);
 		Vector2 operator-(Vector2 Other);
+		bool operator==(Vector2 Other);
+		Vector2 Normalized();
 	};
 	double Vector2Dot(Vector2 A, Vector2 B);
 	// Represents a type of convex collision shape. Mostly holds virtual functions
