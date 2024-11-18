@@ -24,6 +24,7 @@ namespace KinSolver {
 		double X;
 		double Y;
 		Vector2 operator+(Vector2 Other);
+		Vector2 operator-(Vector2 Other);
 	};
 	double Vector2Dot(Vector2 A, Vector2 B);
 	// Represents a type of convex collision shape. Mostly holds virtual functions
@@ -39,6 +40,7 @@ namespace KinSolver {
 	public:
 		std::vector<Vector2> Points;
 		std::tuple<double, double> ProjectShape(Vector2 Axis);
+		std::vector<Vector2> GetSeperationAxes();
 	};
 }
 
