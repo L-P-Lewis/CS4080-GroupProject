@@ -51,3 +51,31 @@ std::vector<Vector2> Polygon::GetSeperationAxes(){
 	}
 	return Out;
 }
+AABB Polygon::GetSweptAABB(Vector2 Movement) {
+	double MinX, MaxX, MinY, MaxY;
+	for (int i = 0; i < Points.size(); i++) {
+		MinX = std::min(MinX, Points.at(i).X);
+		MinY = std::min(MinY, Points.at(i).Y);
+		MaxX = std::max(MaxX, Points.at(i).X);
+		MaxY = std::max(MaxY, Points.at(i).Y);
+	}
+	AABB Box;
+	Box.X = MinX;
+	Box.Y = MinY;
+	Box.Width = MaxX - MinX;
+	Box.Height = MaxY - MaxY;
+
+	if (Movement.X > 0) {
+		Box.Width += Movement.X;
+	}
+	if (Movement.X < 0) {
+		Box.X += Movement.X;
+	}
+	if (Movement.Y > 0) {
+		Box.Height += Movement.Y;
+	}
+	if (Movement.Y < 0) {
+		Box.Y += Movement.Y;
+	}
+	return Box;
+}

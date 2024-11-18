@@ -42,6 +42,7 @@ namespace KinSolver {
 		std::vector<Vector2> Points;
 		std::tuple<double, double> ProjectShape(Vector2 Axis);
 		std::vector<Vector2> GetSeperationAxes();
+		AABB GetSweptAABB(Vector2 Movement); 
 	};
 }
 
