@@ -23,6 +23,7 @@ namespace KinSolver {
 	public:
 		double X;
 		double Y;
+		Vector2 operator+(Vector2 Other);
 	};
 	double Vector2Dot(Vector2 A, Vector2 B);
 	// Represents a type of convex collision shape. Mostly holds virtual functions
