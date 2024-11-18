@@ -38,7 +38,7 @@ namespace KinSolver {
 		// TODO: Make this take in a velocity vector
 		MoveAndSlideResult MoveAndSlide(int ShapeID, Vector2 Velocity);
 	private:
-		std::vector<Shape> Shapes;
+		std::vector<Shape*> Shapes;
 
 };
 }
