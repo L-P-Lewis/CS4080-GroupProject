@@ -37,6 +37,7 @@ namespace KinSolver {
 	class Polygon : public Shape {
 	public:
 		std::vector<Vector2> Points;
+		std::tuple<double, double> ProjectShape(Vector2 Axis);
 	};
 }
 
