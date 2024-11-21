@@ -39,7 +39,7 @@ double GetRangeExitTime(Range Mover, Range Static, double Movement) {
 	return Difference / Movement;
 }
 
-double TestCollideShapes(Shape Mover, Shape Target, Vector2 Movement){
+SweepResult TestCollideShapes(Shape Mover, Shape Target, Vector2 Movement){
 	// Step 1: Get all axes of potential collision
 	std::set<Vector2> CollisionAxes;
 	AddProjectedMovementAxes(&CollisionAxes, Mover.GetSeperationAxes(), Movement);
@@ -72,7 +72,7 @@ double TestCollideShapes(Shape Mover, Shape Target, Vector2 Movement){
 	bool DidHit = FirstExit > LastEntry && LastEntry <= 1.0;
 	// The normal of collision is the direction of the last time of entry
 	//TODO: Rework to return data struct
-	return LastEntry;
+	return (SweepResult){LastEntry, LastEntryDir};
 }
 
 
