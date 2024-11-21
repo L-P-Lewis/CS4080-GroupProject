@@ -17,7 +17,7 @@ namespace KinSolver {
 		double Width;
 		double Height;
 	};
-
+	bool AABBOverlap(AABB A, AABB B);
 	// Represents a 2d vector
 	class Vector2 {
 	public:
@@ -28,8 +28,10 @@ namespace KinSolver {
 		Vector2 operator-(Vector2 Other);
 		bool operator==(Vector2 Other);
 		Vector2 Normalized();
+		Vector2(double X, double Y) : X(X), Y(Y) { };
 	};
 	double Vector2Dot(Vector2 A, Vector2 B);
+	const Vector2 VECTOR_2_ZERO = Vector2(0.0, 0.0);
 	// Represents a type of convex collision shape. Mostly holds virtual functions
 	class Shape {
 	public:

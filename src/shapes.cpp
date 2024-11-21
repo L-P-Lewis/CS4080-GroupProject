@@ -40,6 +40,9 @@ Vector2 Vector2::Normalized() {
 	Other.Y = Y / Length;
 	return Other;
 }
+bool AABBOverlap(AABB A, AABB B){
+	return A.X <= B.X + B.Width && A.X + A.Width >= B.X && A.Y <= B.Y + B.Height && A.Y + A.Height >= B.Y;
+}
 std::tuple<double, double> Polygon::ProjectShape(Vector2 Axis){
 	double min, max;
 	for (int i = 0; i < Points.size(); i++) {

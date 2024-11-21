@@ -89,3 +89,15 @@ int CollisionServer::RegisterShape(Shape NewShape) {
 	Shapes.push_back(&NewShape);
 	return Shapes.size() - 1;
 }
+
+
+std::vector<int> CollisionServer::GetShapesInAABB(AABB BoundingBox){
+	std::vector<int> CollisionList;
+	for (int i = 0; i < Shapes.size(); i++) {
+		if (Shapes[i] == nullptr) continue;
+		if (AABBOverlap(BoundingBox, Shapes[i]->GetSweptAABB(VECTOR_2_ZERO))) {
+			CollisionList.push_back(i);
+		}
+	}
+	return CollisionList;
+}
