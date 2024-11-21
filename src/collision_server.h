@@ -8,6 +8,7 @@
 #define KINSOLVER_COLLISIONSERVER_H_
 
 namespace KinSolver {
+	typedef std::vector<int> ShapeList;
 	struct SweepResult {
 		double TravelPortion;
 		Vector2 HitVector;
