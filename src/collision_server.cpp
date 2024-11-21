@@ -101,3 +101,19 @@ ShapeList CollisionServer::GetShapesInAABB(AABB BoundingBox){
 	}
 	return CollisionList;
 }
+
+
+GlobalSweepResult CollisionServer::SweepShape(int ShapeID, Vector2 Velocity){
+	ShapeList PotentialCollisions = GetShapesInAABB(Shapes[ShapeID]->GetSweptAABB(Velocity));
+	SweepResult ClosestHit = (SweepResult){1.0, Velocity};
+	int ClosestObject = -1; 
+	for (int i = 0; i < PotentialCollisions.size(); i++) {
+		if (i == ShapeID) continue;
+		SweepResult NewHit = TestCollideShapes(*Shapes[ShapeID], *Shapes[i], Velocity);
+		if (NewHit.TravelPortion < ClosestHit.TravelPortion) {
+			ClosestHit = NewHit;
+			ClosestObject = i;
+		}
+	}
+	return (GlobalSweepResult) {ClosestHit, ClosestObject};
+}
