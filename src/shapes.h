@@ -2,8 +2,9 @@
 //
 // Defines a base shape class, as well as defining a square and polygon shape
 #include <vector>
+#include <iostream>
 #include <tuple>
-
+#include <cmath>
 
 #ifndef KINSOLVER_SHAPES_H_
 #define KINSOLVER_SHAPES_H_
@@ -28,6 +29,7 @@ namespace KinSolver {
 		bool operator<(const Vector2 &Other) const {return Other.X + Other.Y < X + Y;};
 		bool operator==(const Vector2 &Other) const {return Other.X == X && Other.Y == Y;};
 		Vector2 Normalized();
+		double Length() {return sqrt(X * X + Y * Y); };
 		Vector2() : X(0.0), Y(0.0) {};
 		Vector2(double X, double Y) : X(X), Y(Y) { };
 		static double Vector2Dot(Vector2 A, Vector2 B);
@@ -38,7 +40,10 @@ namespace KinSolver {
 	public:
 		Vector2 Position;
 		Shape() : Position(Vector2()) {};
-		virtual std::vector<Vector2> GetSeperationAxes() {return std::vector<Vector2>();};
+		virtual std::vector<Vector2> GetSeperationAxes() {
+			std::cout << "Adding null sep axes\n";
+			return std::vector<Vector2>();
+	};
 		virtual std::tuple<double, double> ProjectShape(Vector2 Axis) {return std::tuple<double, double>();} ;
 		virtual AABB GetSweptAABB(Vector2 Movement) {return (AABB){0.0, 0.0, 0.0, 0.0};}; 
 	};
@@ -46,9 +51,9 @@ namespace KinSolver {
 	class Polygon : public Shape {
 	public:
 		std::vector<Vector2> Points;
-		std::tuple<double, double> ProjectShape(Vector2 Axis);
-		std::vector<Vector2> GetSeperationAxes();
-		AABB GetSweptAABB(Vector2 Movement); 
+		std::tuple<double, double> ProjectShape(Vector2 Axis) override;
+		std::vector<Vector2> GetSeperationAxes() override;
+		AABB GetSweptAABB(Vector2 Movement) override; 
 	};
 }
 

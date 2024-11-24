@@ -30,10 +30,10 @@ namespace KinSolver {
 	// The main collision server, holds a record of all physical shapes in the world and has methods for moving them
 	class CollisionServer {
 	public:
-		CollisionServer();
+		CollisionServer() : Shapes() {};
 		// Registers a shape in the collision server. Returns the shape's ID, which can be used as a lightweight reference
 		// TODO: Make this take in a shape builder
-		int RegisterShape(Shape NewShape);
+		int RegisterShape(Shape* NewShape);
 		// Sweeps a shape through space, returning a Sweep result on completion
 		// TODO: Make this take in a velocity vector
 		GlobalSweepResult SweepShape(int ShapeID, Vector2 Velocity);
@@ -42,7 +42,7 @@ namespace KinSolver {
 		// Move a shape through space through as much of it's velocity as possible. Sliding allong surfaces, and only completely stopping if it hits something head on.
 		// TODO: Make this take in a velocity vector
 //		MoveAndSlideResult MoveAndSlide(int ShapeID, Vector2 Velocity);
-		static SweepResult TestCollideShapes(Shape Mover, Shape Target, Vector2 Movement);
+		static SweepResult TestCollideShapes(Shape* Mover, Shape* Target, Vector2 Movement);
 	private:
 		std::vector<Shape*> Shapes;
 

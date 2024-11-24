@@ -2,12 +2,13 @@
 #include <algorithm>
 #include <tuple>
 #include <cmath>
+#include <iostream>
 #include "shapes.h"
 
 using namespace KinSolver;
 
 double Vector2::Vector2Dot(Vector2 A, Vector2 B) {
-	return A.X * B.X + A.Y + B.Y;
+	return A.X * B.X + A.Y * B.Y;
 }
 
 Vector2 Vector2::operator+(Vector2 Other){
@@ -41,9 +42,12 @@ Vector2 Vector2::Normalized() {
 bool AABBOverlap(AABB A, AABB B){
 	return A.X <= B.X + B.Width && A.X + A.Width >= B.X && A.Y <= B.Y + B.Height && A.Y + A.Height >= B.Y;
 }
-std::tuple<double, double> Polygon::ProjectShape(Vector2 Axis){
+std::tuple<double, double> Polygon::ProjectShape(Vector2 Axis) {
 	double min, max;
+	min = 9999999.0;
+	max = -99999999.0;
 	for (int i = 0; i < Points.size(); i++) {
+		Vector2 Adjpoint = Points[i] + Position;
 		double proj = Vector2::Vector2Dot(Points.at(i) + Position, Axis);
 		min = std::min(proj, min);
 		max = std::max(proj, max);
@@ -54,10 +58,12 @@ std::tuple<double, double> Polygon::ProjectShape(Vector2 Axis){
 std::vector<Vector2> Polygon::GetSeperationAxes(){
 	std::vector<Vector2> Out;
 	for (int i = 0; i < Points.size(); i++) {
-		Vector2 Dir = Points.at(i) - Points.at(i + 1 % Points.size());
+		Vector2 Dir = Points.at(i) - Points.at((i + 1) % Points.size());
 		Vector2 Axis;
 		Axis.X = -Dir.Y;
 		Axis.Y = Dir.X;
+		if (Axis.X == -0.0) Axis.X = 0;
+		if (Axis.Y == -0.0) Axis.Y = 0;
 		Out.push_back(Axis.Normalized());
 	}
 	return Out;
