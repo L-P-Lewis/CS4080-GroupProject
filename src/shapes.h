@@ -17,7 +17,6 @@ namespace KinSolver {
 		double Width;
 		double Height;
 	};
-	bool AABBOverlap(AABB A, AABB B);
 	// Represents a 2d vector
 	class Vector2 {
 	public:
@@ -26,19 +25,22 @@ namespace KinSolver {
 		Vector2 operator*(double scalar);
 		Vector2 operator+(Vector2 Other);
 		Vector2 operator-(Vector2 Other);
-		bool operator==(Vector2 Other);
+		bool operator<(const Vector2 &Other) const {return Other.X + Other.Y < X + Y;};
+		bool operator==(const Vector2 &Other) const {return Other.X == X && Other.Y == Y;};
 		Vector2 Normalized();
+		Vector2() : X(0.0), Y(0.0) {};
 		Vector2(double X, double Y) : X(X), Y(Y) { };
+		static double Vector2Dot(Vector2 A, Vector2 B);
 	};
-	double Vector2Dot(Vector2 A, Vector2 B);
 	const Vector2 VECTOR_2_ZERO = Vector2(0.0, 0.0);
 	// Represents a type of convex collision shape. Mostly holds virtual functions
 	class Shape {
 	public:
 		Vector2 Position;
-		virtual std::vector<Vector2> GetSeperationAxes();
-		virtual std::tuple<double, double> ProjectShape(Vector2 Axis);
-		virtual AABB GetSweptAABB(Vector2 Movement); 
+		Shape() : Position(Vector2()) {};
+		virtual std::vector<Vector2> GetSeperationAxes() {return std::vector<Vector2>();};
+		virtual std::tuple<double, double> ProjectShape(Vector2 Axis) {return std::tuple<double, double>();} ;
+		virtual AABB GetSweptAABB(Vector2 Movement) {return (AABB){0.0, 0.0, 0.0, 0.0};}; 
 	};
 
 	class Polygon : public Shape {
@@ -50,4 +52,5 @@ namespace KinSolver {
 	};
 }
 
+	bool AABBOverlap(KinSolver::AABB A, KinSolver::AABB B);
 #endif

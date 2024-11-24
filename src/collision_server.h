@@ -26,7 +26,6 @@ namespace KinSolver {
 		
 	};
 
-	SweepResult TestCollideShapes(Shape Mover, Shape Target, Vector2 Movement);
 
 	// The main collision server, holds a record of all physical shapes in the world and has methods for moving them
 	class CollisionServer {
@@ -39,10 +38,11 @@ namespace KinSolver {
 		// TODO: Make this take in a velocity vector
 		GlobalSweepResult SweepShape(int ShapeID, Vector2 Velocity);
 		// Gets all shapes that overlap the given bounding box and that are on a given layer.
-		std::vector<int> GetShapesInAABB(AABB BoundingBox);
+		ShapeList GetShapesInAABB(AABB BoundingBox);
 		// Move a shape through space through as much of it's velocity as possible. Sliding allong surfaces, and only completely stopping if it hits something head on.
 		// TODO: Make this take in a velocity vector
-		MoveAndSlideResult MoveAndSlide(int ShapeID, Vector2 Velocity);
+//		MoveAndSlideResult MoveAndSlide(int ShapeID, Vector2 Velocity);
+		static SweepResult TestCollideShapes(Shape Mover, Shape Target, Vector2 Movement);
 	private:
 		std::vector<Shape*> Shapes;
 

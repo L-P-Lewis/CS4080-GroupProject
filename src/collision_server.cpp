@@ -12,7 +12,7 @@ using namespace KinSolver;
 // Takes in a list of vectors and adds all of them to the given set pointing opposite movement
 void AddProjectedMovementAxes(std::set<Vector2>* Set, std::vector<Vector2> Axes, Vector2 Movement) {
 	for ( int i = 0; i < Axes.size(); i++) {
-		if (Vector2Dot(Axes[i], Movement) < 0.0) {
+		if (Vector2::Vector2Dot(Axes[i], Movement) < 0.0) {
 			Set -> insert(Axes[i] * -1.0);
 		} else {
 			Set->insert(Axes[i]);
@@ -39,7 +39,7 @@ double GetRangeExitTime(Range Mover, Range Static, double Movement) {
 	return Difference / Movement;
 }
 
-SweepResult TestCollideShapes(Shape Mover, Shape Target, Vector2 Movement){
+SweepResult CollisionServer::TestCollideShapes(Shape Mover, Shape Target, Vector2 Movement){
 	// Step 1: Get all axes of potential collision
 	std::set<Vector2> CollisionAxes;
 	AddProjectedMovementAxes(&CollisionAxes, Mover.GetSeperationAxes(), Movement);
@@ -53,12 +53,12 @@ SweepResult TestCollideShapes(Shape Mover, Shape Target, Vector2 Movement){
 		double Entry = GetRangeEntryTime(
 			Mover.ProjectShape(*Axis),
 			Target.ProjectShape(*Axis),
-			Vector2Dot(Movement, *Axis)
+			Vector2::Vector2Dot(Movement, *Axis)
 		);
 		double Exit = GetRangeExitTime(
 			Mover.ProjectShape(*Axis),
 			Target.ProjectShape(*Axis),
-			Vector2Dot(Movement, *Axis)
+			Vector2::Vector2Dot(Movement, *Axis)
 		);
 		// Find earliest time of exiting and latest time of entry
 		FirstExit = std::min(Exit, Entry);

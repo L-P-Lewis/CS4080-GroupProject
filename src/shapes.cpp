@@ -6,7 +6,7 @@
 
 using namespace KinSolver;
 
-double Vector2Dot(Vector2 A, Vector2 B) {
+double Vector2::Vector2Dot(Vector2 A, Vector2 B) {
 	return A.X * B.X + A.Y + B.Y;
 }
 
@@ -30,9 +30,7 @@ Vector2 Vector2::operator*(double Scalar){
 	Out.Y = Y * Scalar;
 	return Out;
 }
-bool Vector2::operator==(Vector2 Other){
-	return X == Other.X && Y == Other.Y;
-}
+
 Vector2 Vector2::Normalized() {
 	double Length = sqrt(X * X + Y * Y);
 	Vector2 Other;
@@ -46,7 +44,7 @@ bool AABBOverlap(AABB A, AABB B){
 std::tuple<double, double> Polygon::ProjectShape(Vector2 Axis){
 	double min, max;
 	for (int i = 0; i < Points.size(); i++) {
-		double proj = Vector2Dot(Points.at(i) + Position, Axis);
+		double proj = Vector2::Vector2Dot(Points.at(i) + Position, Axis);
 		min = std::min(proj, min);
 		max = std::max(proj, max);
 	}
