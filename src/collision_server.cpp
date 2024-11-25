@@ -84,7 +84,7 @@ SweepResult CollisionServer::TestCollideShapes(Shape* Mover, Shape* Target, Vect
 	bool DidHit = FirstExit > LastEntry && LastEntry <= 1.0;
 	// The normal of collision is the direction of the last time of entry
 	//TODO: Rework to return data struct
-	return (SweepResult){LastEntry / Movement.Length(), LastEntryDir};
+	return {LastEntry / Movement.Length(), LastEntryDir};
 }
 
 
@@ -117,7 +117,7 @@ ShapeList CollisionServer::GetShapesInAABB(AABB BoundingBox){
 
 GlobalSweepResult CollisionServer::SweepShape(int ShapeID, Vector2 Velocity){
 	ShapeList PotentialCollisions = GetShapesInAABB(Shapes[ShapeID]->GetSweptAABB(Velocity));
-	SweepResult ClosestHit = (SweepResult){1.0, Velocity};
+	SweepResult ClosestHit = {1.0, Velocity};
 	int ClosestObject = -1; 
 	for (int i = 0; i < PotentialCollisions.size(); i++) {
 		if (i == ShapeID) {
@@ -132,5 +132,5 @@ GlobalSweepResult CollisionServer::SweepShape(int ShapeID, Vector2 Velocity){
 			ClosestObject = i;
 		}
 	}
-	return (GlobalSweepResult) {ClosestHit, ClosestObject};
+	return {ClosestHit, ClosestObject};
 }

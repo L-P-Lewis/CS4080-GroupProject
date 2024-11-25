@@ -52,7 +52,7 @@ std::tuple<double, double> Polygon::ProjectShape(Vector2 Axis) {
 		min = std::min(proj, min);
 		max = std::max(proj, max);
 	}
-	return std::tuple(min, max);
+	return std::tuple<double, double>(min, max);
 }
 
 std::vector<Vector2> Polygon::GetSeperationAxes(){

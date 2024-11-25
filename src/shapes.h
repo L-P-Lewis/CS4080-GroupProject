@@ -45,7 +45,7 @@ namespace KinSolver {
 			return std::vector<Vector2>();
 	};
 		virtual std::tuple<double, double> ProjectShape(Vector2 Axis) {return std::tuple<double, double>();} ;
-		virtual AABB GetSweptAABB(Vector2 Movement) {return (AABB){0.0, 0.0, 0.0, 0.0};}; 
+		virtual AABB GetSweptAABB(Vector2 Movement) {return {0.0, 0.0, 0.0, 0.0};}; 
 	};
 
 	class Polygon : public Shape {
