@@ -3,7 +3,7 @@
 ## Colaborators
 
 - Luke Lewis
-- Erick
+- Erick Hambardzumyan
 
 ## Project Description
 
