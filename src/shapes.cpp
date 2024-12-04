@@ -1,98 +1,84 @@
-#include <vector>
+#include "shapes.h"
 #include <algorithm>
-#include <tuple>
 #include <cmath>
 #include <iostream>
-#include "shapes.h"
 
 using namespace KinSolver;
 
-double Vector2::Vector2Dot(Vector2 A, Vector2 B) {
-	return A.X * B.X + A.Y * B.Y;
+Vector2 Vector2::operator*(double scalar) const {
+    return Vector2(X * scalar, Y * scalar);
 }
 
-Vector2 Vector2::operator+(Vector2 Other){
-	Vector2 Out;
-	Out.X = X + Other.X;
-	Out.Y = Y + Other.Y;
-	return Out;
+Vector2 Vector2::operator+(const Vector2& Other) const {
+    return Vector2(X + Other.X, Y + Other.Y);
 }
 
-Vector2 Vector2::operator-(Vector2 Other){
-	Vector2 Out;
-	Out.X = X - Other.X;
-	Out.Y = Y - Other.Y;
-	return Out;
+Vector2 Vector2::operator-(const Vector2& Other) const {
+    return Vector2(X - Other.X, Y - Other.Y);
 }
 
-Vector2 Vector2::operator*(double Scalar){
-	Vector2 Out;
-	Out.X = X * Scalar;
-	Out.Y = Y * Scalar;
-	return Out;
+bool Vector2::operator<(const Vector2& Other) const {
+    if (X != Other.X)
+        return X < Other.X;
+    return Y < Other.Y;
 }
 
-Vector2 Vector2::Normalized() {
-	double Length = sqrt(X * X + Y * Y);
-	Vector2 Other;
-	Other.X = X / Length;
-	Other.Y = Y / Length;
-	return Other;
+bool Vector2::operator==(const Vector2& Other) const {
+    return X == Other.X && Y == Other.Y;
 }
-bool AABBOverlap(AABB A, AABB B){
-	return A.X <= B.X + B.Width && A.X + A.Width >= B.X && A.Y <= B.Y + B.Height && A.Y + A.Height >= B.Y;
+
+Vector2 Vector2::Normalized() const {
+    double length = Length();
+    if (length == 0.0) return Vector2(0.0, 0.0);
+    return Vector2(X / length, Y / length);
 }
+
+double Vector2::Length() const {
+    return std::sqrt(X * X + Y * Y);
+}
+
+double Vector2::Vector2Dot(const Vector2& A, const Vector2& B) {
+    return A.X * B.X + A.Y * B.Y;
+}
+
 std::tuple<double, double> Polygon::ProjectShape(Vector2 Axis) {
-	double min, max;
-	min = 9999999.0;
-	max = -99999999.0;
-	for (int i = 0; i < Points.size(); i++) {
-		Vector2 Adjpoint = Points[i] + Position;
-		double proj = Vector2::Vector2Dot(Points.at(i) + Position, Axis);
-		min = std::min(proj, min);
-		max = std::max(proj, max);
-	}
-	return std::tuple<double, double>(min, max);
+    double min = 1e9, max = -1e9;
+    for (const auto& Point : Points) {
+        double projection = Vector2::Vector2Dot(Point + Position, Axis);
+        min = std::min(min, projection);
+        max = std::max(max, projection);
+    }
+    return { min, max };
 }
 
-std::vector<Vector2> Polygon::GetSeperationAxes(){
-	std::vector<Vector2> Out;
-	for (int i = 0; i < Points.size(); i++) {
-		Vector2 Dir = Points.at(i) - Points.at((i + 1) % Points.size());
-		Vector2 Axis;
-		Axis.X = -Dir.Y;
-		Axis.Y = Dir.X;
-		if (Axis.X == -0.0) Axis.X = 0;
-		if (Axis.Y == -0.0) Axis.Y = 0;
-		Out.push_back(Axis.Normalized());
-	}
-	return Out;
+std::vector<Vector2> Polygon::GetSeparationAxes() {
+    std::vector<Vector2> Axes;
+    for (size_t i = 0; i < Points.size(); ++i) {
+        Vector2 Edge = Points[i] - Points[(i + 1) % Points.size()];
+        Vector2 Normal(-Edge.Y, Edge.X);
+        Axes.push_back(Normal.Normalized());
+    }
+    return Axes;
 }
+
 AABB Polygon::GetSweptAABB(Vector2 Movement) {
-	double MinX, MaxX, MinY, MaxY;
-	for (int i = 0; i < Points.size(); i++) {
-		MinX = std::min(MinX, Points.at(i).X);
-		MinY = std::min(MinY, Points.at(i).Y);
-		MaxX = std::max(MaxX, Points.at(i).X);
-		MaxY = std::max(MaxY, Points.at(i).Y);
-	}
-	AABB Box;
-	Box.X = MinX;
-	Box.Y = MinY;
-	Box.Width = MaxX - MinX;
-	Box.Height = MaxY - MaxY;
+    double MinX = 1e9, MinY = 1e9, MaxX = -1e9, MaxY = -1e9;
+    for (const auto& Point : Points) {
+        Vector2 AdjustedPoint = Point + Position;
+        MinX = std::min(MinX, AdjustedPoint.X);
+        MinY = std::min(MinY, AdjustedPoint.Y);
+        MaxX = std::max(MaxX, AdjustedPoint.X);
+        MaxY = std::max(MaxY, AdjustedPoint.Y);
+    }
 
-	if (Movement.X > 0) {
-		Box.Width += Movement.X;
-	}
-	if (Movement.X < 0) {
-		Box.X += Movement.X;
-	}
-	if (Movement.Y > 0) {
-		Box.Height += Movement.Y;
-	}
-	if (Movement.Y < 0) {
-		Box.Y += Movement.Y;
-	}
-	return Box;
+    if (Movement.X > 0) MaxX += Movement.X;
+    else MinX += Movement.X;
+    if (Movement.Y > 0) MaxY += Movement.Y;
+    else MinY += Movement.Y;
+
+
+    std::cout << "Swept AABB: Min(" << MinX << ", " << MinY << "), Max(" << MaxX << ", " << MaxY << ")\n";
+    return { MinX, MinY, MaxX - MinX, MaxY - MinY };
+
 }
+
