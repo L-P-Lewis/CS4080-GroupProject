@@ -18,7 +18,7 @@ This library provides the necessary tools to detect and handle collisions betwee
 The solver also handles the concept of move and slide, where an object that collides with another will slide along the collision surface to avoid further overlap, maintaining its velocity while resolving collisions.
 
 ## Features
---------------------------------------------------------------------------
+
 Collision Detection: Tests if two convex shapes are colliding using the Separating Axis Theorem (SAT).
 
 Kinematic Collision Solver: Computes how objects move and slide when a collision occurs, updating their positions and velocities.
